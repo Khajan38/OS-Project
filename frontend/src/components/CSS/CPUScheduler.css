@@ -1,0 +1,105 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@600&family=Lora:ital,wght@0,400;1,400&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700;900&display=swap');
+
+
+.cpu-scheduler {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  background-repeat: no-repeat;
+  background-position: 0 0;
+  background-size: cover;
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+  position: relative;
+}
+
+/*-------------------------------------Form Box Part----------------------------------*/
+.form-box {
+  margin: 30px;
+  position: relative;
+  right: 0;
+  display: grid;
+  align-items: center;
+  text-align: center;
+  z-index: 1;
+  width: 50%;
+  height: auto;
+  color: #333;
+}
+
+.form-box .input-box {
+  position: relative;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+}
+
+.form-box .input-box label {
+  flex-shrink: 0;
+  font-family: 'Montserrat', 'Poppins', sans-serif;
+  color: #1d1d1d;
+  font-weight: 400;
+  padding: 11px 10px;
+  font-size: 20px;
+  min-width: 45px;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.form-box .input-box input, .form-box .input-box select, .form-box .input-box button{
+  flex: 1;
+  min-width: 0;
+  padding: 13px 13px 13px 20px;
+  background: #eee;
+  border-radius: 8px;
+  border: none;
+  outline: none;
+  font-size: 16px;
+  color: #333;
+  font-weight: 500;
+  font-family: 'Montserrat', 'Poppins', sans-serif;
+}
+
+.form-box .input-box input::placeholder, .form-box .input-box select::placeholder{
+  color: #888;
+  font-weight: 400;
+}
+
+.form-box .input-box option{
+  width: 100%; height: 48px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 600;
+  transition: all 0.3s ease-in-out;
+  font-family: 'Montserrat', 'Poppins', sans-serif;
+}
+
+.form-box .btn{
+  width: 160px; 
+}
+
+/*------------------------------------File Dialog Box---------------------------------*/
+.fileModal{
+  display:none; 
+  position:fixed; 
+  top:0; left:0; 
+  width:100%; height:100%; 
+  background:rgba(0,0,0,0.6);
+}
+.fileModal>div{
+  background:#fff; 
+  margin:10% auto; 
+  padding:20px; 
+  width:400px; 
+  border-radius:8px;
+}
