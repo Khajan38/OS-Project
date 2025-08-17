@@ -1,7 +1,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@600&family=Lora:ital,wght@0,400;1,400&display=swap");
 @import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700;900&display=swap');
-
+@import url('https://cdn.jsdelivr.net/gh/microsoft/cascadia-code@latest/fonts/webfonts/CascadiaCode.css');
 
 .cpu-scheduler {
   display: flex;
@@ -17,16 +17,23 @@
   position: relative;
 }
 
+.container{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 80%; width: 100%;
+}
+
 /*-------------------------------------Form Box Part----------------------------------*/
 .form-box {
   margin: 30px;
   position: relative;
-  right: 0;
-  display: grid;
+  display: flex;
+  flex-direction: column;
   align-items: center;
   text-align: center;
   z-index: 1;
-  width: 50%;
+  width: 40%;
   height: auto;
   color: #333;
 }
@@ -37,6 +44,7 @@
   display: flex;
   align-items: flex-start;
   gap: 14px;
+  width: 100%;
 }
 
 .form-box .input-box label {
@@ -85,21 +93,112 @@
 }
 
 .form-box .btn{
-  width: 160px; 
+  width: 150px;
+}
+
+/*-------------------------------------Terminal Part----------------------------------*/
+.terminal{
+  height: 90%; width: 50%;
+  margin: 20px 50px 20px 20px; 
+  padding: 20px 20px;
+  background-color: black;
+  border-radius: 20px;
+  border: 5px solid rgb(62, 60, 60);
+  color: white;
+  font-family: "Cascadia Code", monospace;
+  font-size: 13px;
+}
+
+.terminal pre {
+  font-family: "Cascadia Code", monospace;
+  font-size: 13px;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+.terminal input, .terminal span{
+  background-color: black;
+  font-family: "Cascadia Code", monospace;
+  font-size: 13px;
+  width: 100%; 
+  border: none;
+  width: calc(100% - 40px); 
+  outline: none;
+  color: white;
 }
 
 /*------------------------------------File Dialog Box---------------------------------*/
-.fileModal{
-  display:none; 
-  position:fixed; 
-  top:0; left:0; 
-  width:100%; height:100%; 
-  background:rgba(0,0,0,0.6);
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+  backdrop-filter: blur(4px);
 }
-.fileModal>div{
-  background:#fff; 
-  margin:10% auto; 
-  padding:20px; 
-  width:400px; 
-  border-radius:8px;
+
+.modal-content {
+  background: #ffffff;
+  width: 420px;
+  max-height: 75vh;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  animation: fadeIn 0.2s ease-out;
+}
+
+.modal-content ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  flex: 1;
+  overflow-y: auto;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  background: #fafafa;
+}
+
+.modal-content ul li {
+  padding: 10px 15px;
+  transition: background 0.15s ease;
+  border-bottom: 1px solid #eee;
+}
+
+.modal-content ul li:last-child {
+  border-bottom: none;
+}
+
+.modal-content ul li:hover {
+  background: #eaf3ff;
+  cursor: pointer;
+}
+
+.modal-content ul::-webkit-scrollbar {
+  width: 8px;
+}
+.modal-content ul::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 4px;
+}
+.modal-content ul::-webkit-scrollbar-thumb:hover {
+  background: #aaa;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
