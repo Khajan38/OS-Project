@@ -38,13 +38,19 @@
   color: #333;
 }
 
-.form-box .input-box {
+.form-box .input-box, .form-box .browse {
   position: relative;
   margin-bottom: 20px;
   display: flex;
   align-items: flex-start;
   gap: 14px;
   width: 100%;
+}
+
+.form-box .browse{
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
 }
 
 .form-box .input-box label {
@@ -61,7 +67,8 @@
   justify-content: center;
 }
 
-.form-box .input-box input, .form-box .input-box select, .form-box .input-box button{
+.form-box .input-box input, .form-box .input-box select, .form-box .input-box button, .form-box .input-box>.browse>span{
+  overflow-wrap: break-word;
   flex: 1;
   min-width: 0;
   padding: 13px 13px 13px 20px;
@@ -73,6 +80,10 @@
   color: #333;
   font-weight: 500;
   font-family: 'Montserrat', 'Poppins', sans-serif;
+}
+
+.form-box .input-box>.browse>span{
+  min-width: 65%;
 }
 
 .form-box .input-box input::placeholder, .form-box .input-box select::placeholder{
@@ -96,6 +107,12 @@
   width: 150px;
 }
 
+.form-box .browse{
+  display: flex;
+  justify-content:space-between;
+  text-align: justify;
+}
+
 /*-------------------------------------Terminal Part----------------------------------*/
 .terminal{
   height: 90%; width: 50%;
@@ -109,11 +126,17 @@
   font-size: 13px;
 }
 
-.terminal pre {
+.terminal pre, .terminalLink {
   font-family: "Cascadia Code", monospace;
   font-size: 13px;
   white-space: pre-wrap;
   word-wrap: break-word;
+  color: white;
+  text-decoration: none;
+}
+
+.terminalLink:hover{
+  text-decoration: underline;
 }
 
 .terminal input, .terminal span{

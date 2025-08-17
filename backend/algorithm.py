@@ -1,12 +1,21 @@
 import pandas as pd
-from fcfs import fcfs
+from backend.fcfs import fcfs
 
-def getProcesses (i):
-     df = pd.read_csv(f'backend/processes{i}.csv')
+def getProcesses(source, limit=None):
+     if source is None: source = "processes1.csv"
+     if limit is None: limit = 10
+     df = pd.read_csv(f'backend/assets/{source}')
+     if limit <= 0 or limit > 10: limit = 10;
+     if limit is not None:
+          df = df.head(limit)
      return df.to_dict(orient="records")
 
-# 1: fcfs, 2: sjf, 3: rr, 4: priority
-def getAlgorithm (i, j):
-     if j == 1: print(fcfs(getProcesses(i)))
-
-getAlgorithm(1, 1)
+# 1: FCFS, 2: SJF, 3: Priority
+def getAlgorithm (algorithm, noOfProcesses, source):
+     processes = getProcesses(source, int(noOfProcesses))
+     if algorithm is None: algorithm = "FCFS"
+     print(fcfs(processes))
+     if algorithm == 'FCFS': return fcfs(processes)
+     elif algorithm == 'SJF': return fcfs(processes)
+     elif algorithm == 'Priority': return fcfs(processes)
+     else: return fcfs(processes)
