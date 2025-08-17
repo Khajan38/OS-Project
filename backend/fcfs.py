@@ -1,4 +1,5 @@
 def fcfs(processes):
+    temp = processes
     processes.sort(key=lambda x: x['arrival'])
     time = 0
     gantt_chart = []
@@ -25,10 +26,12 @@ def fcfs(processes):
     avg_turnaround = sum(r["turnaround_time"] for r in results) / len(results)
 
     return {
+        "processes": temp,
         "gantt_chart": gantt_chart,
         "process_stats": results,
         "averages": {
             "avg_waiting": avg_waiting,
-            "avg_turnaround": avg_turnaround
+            "avg_turnaround": avg_turnaround,
+            "end_time": time
         }
     }
