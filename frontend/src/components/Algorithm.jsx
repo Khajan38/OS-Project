@@ -46,7 +46,6 @@ const Algorithm = () => {
     if (!processes) return;
     const newLiveData = processes.map((value) => ({ process_name: value.id, priority: value.priority, remaining_burst: value.burst, waiting_time: 0, burstTime: value.burst, completed: false }));
     setLiveData(newLiveData);
-    console.log(gantt_chart);
   }, [processes, gantt_chart, endTime]);
 
   useEffect(() => {
