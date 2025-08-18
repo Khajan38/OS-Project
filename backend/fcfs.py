@@ -24,6 +24,7 @@ def fcfs(processes):
 
     avg_waiting = sum(r["waiting_time"] for r in results) / len(results)
     avg_turnaround = sum(r["turnaround_time"] for r in results) / len(results)
+    avg_response = sum(r["response_time"] for r in results) / len(results)
 
     return {
         "processes": temp,
@@ -32,6 +33,7 @@ def fcfs(processes):
         "averages": {
             "avg_waiting": avg_waiting,
             "avg_turnaround": avg_turnaround,
+            "avg_response": avg_response,
             "end_time": time
         }
     }

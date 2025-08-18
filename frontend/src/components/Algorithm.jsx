@@ -25,6 +25,7 @@ const Algorithm = () => {
 
   const [liveData, setLiveData] = useState([]);
   const [timer, setTimer] = useState(0);
+  const [showSummary, setShowSummary] = useState(false);
   let gnatt_ind = useRef(0);
 
   useEffect(() => {
@@ -70,17 +71,31 @@ const Algorithm = () => {
     } if (timer == current.end) { gnatt_ind.current += 1; }
   }, [timer, gantt_chart]);
 
+
+
+  const getProcessColor = (processName) => {
+    const colors = ['#00e676', '#ff6b6b', '#4ecdc4', '#45b7d1', '#96ceb4', '#ffeaa7', '#dda0dd', '#98d8c8', '#f39c12', '#e74c3c'];
+    const processNum = parseInt(processName.replace('P', ''));
+    return colors[processNum % colors.length];
+  };
+
   if (loading) return ( <>
     <div className="toast-overlay" />
     <div className="toast-message processing">Loading the Data...</div>
-  </> ); if (errori) return (<>
+  </> ); 
+  
+  if (errori) return (<>
     <div className="toast-overlay" onClick={() => setError(null)} />
     <div className="toast-message error" onClick={() => setError(null)}>{errori}</div>
   </> );
 
+
+
   return (
     <div className="cpu-scheduler" style={{ backgroundImage: `url(${bgImage})` }}>
-      <h1>{formData.algorithm} Scheduling</h1> <h2>Simulation</h2>
+      <h1>{formData.algorithm} Scheduling</h1> 
+      <h2>Simulation</h2>
+      <div className="timer-display">Time: {timer}/{endTime - 1}</div>
       <table className="livePreview">
         <thead>
           <tr>
@@ -103,6 +118,94 @@ const Algorithm = () => {
           ))}
         </tbody>
       </table>
+      
+      {timer >= endTime && (
+        <button 
+          className="view-summary-button"
+          onClick={() => setShowSummary(!showSummary)}
+        >
+          {showSummary ? "Hide Summary" : "View Summary Report"}
+        </button>
+      )}
+
+      {showSummary && timer >= endTime && (
+        <>
+          {/* Gantt Chart Section */}
+          <div className="summary-section">
+            <h3 className="section-title">Gantt Chart</h3>
+            <div className="gantt-container">
+              <div className="gantt-chart">
+                {gantt_chart.map((item, index) => (
+                  <div
+                    key={index}
+                    className="gantt-item"
+                    style={{
+                      backgroundColor: getProcessColor(item.process),
+                      width: `${((item.end - item.start) / endTime) * 100}%`
+                    }}
+                  >
+                    <span className="process-label">{item.process}</span>
+                    <span className="time-range">{item.start}-{item.end}</span>
+                  </div>
+                ))}
+              </div>
+              <div className="time-axis">
+                {Array.from({ length: endTime }, (_, i) => (
+                  <span key={i} className="time-marker">{i}</span>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Process Statistics Table */}
+          <div className="summary-section">
+            <h3 className="section-title">Process Statistics</h3>
+            <table className="livePreview summary-table">
+              <thead>
+                <tr>
+                  <th>Process ID</th>
+                  <th>Waiting Time</th>
+                  <th>Turnaround Time</th>
+                  <th>Response Time</th>
+                </tr>
+              </thead>
+              <tbody>
+                {processStats.map((stat, index) => (
+                  <tr key={index}>
+                    <td>{stat.id}</td>
+                    <td>{stat.waiting_time}</td>
+                    <td>{stat.turnaround_time}</td>
+                    <td>{stat.response_time}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          {/* Averages Section */}
+          <div className="summary-section">
+            <h3 className="section-title">Performance Metrics</h3>
+            <div className="averages-grid">
+              <div className="metric-card">
+                <div className="metric-value">{averages.avg_waiting?.toFixed(2) || 'N/A'}</div>
+                <div className="metric-label">Average Waiting Time</div>
+              </div>
+              <div className="metric-card">
+                <div className="metric-value">{averages.avg_turnaround?.toFixed(2) || 'N/A'}</div>
+                <div className="metric-label">Average Turnaround Time</div>
+              </div>
+              <div className="metric-card">
+                <div className="metric-value">{averages.avg_response?.toFixed(2) || 'N/A'}</div>
+                <div className="metric-label">Average Response Time</div>
+              </div>
+              <div className="metric-card">
+                <div className="metric-value">{endTime - 1}</div>
+                <div className="metric-label">Total Execution Time</div>
+              </div>
+            </div>
+          </div>
+        </>
+      )}
     </div>
   );
 };
