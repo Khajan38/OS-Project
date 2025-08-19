@@ -1,0 +1,13 @@
+Shortest Job First (SJF) or Shortest Job Next (SJN) is a scheduling process that selects the waiting process with the smallest execution time to execute next. This scheduling method may or may not be preemptive. Significantly reduces the average waiting time for other processes waiting to be executed.
+
+Implementation of SJF Scheduling:
+
+1. Sort all the processes according to the arrival time. 
+2. Then select that process that has minimum arrival time and minimum Burst time. 
+3. After completion of the process make a pool of processes (a ready queue) that arrives afterward till the completion of the previous process and select that process in that queue which is having minimum Burst time. 
+
+Characteristics of SJF Scheduling:
+
+1. Shortest Job first has the advantage of having a minimum average waiting time among all operating system scheduling algorithms.
+2. It is associated with each task as a unit of time to complete.
+3. It may cause starvation if shorter processes keep coming. This problem can be solved using the concept of ageing.

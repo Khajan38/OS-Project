@@ -1,3 +1,9 @@
+#Root Directory in System Path
+import sys, os
+root_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '../'))
+if root_path not in sys.path:
+    sys.path.append(root_path)
+
 import pandas as pd
 from backend.fcfs import fcfs
 

@@ -16,6 +16,8 @@ html, body, #root {
 
 body {
   background-color: #ffffff;
+  overflow-x: hidden;
+  overflow-y: scroll;
 }
 
 #root {

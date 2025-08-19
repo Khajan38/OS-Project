@@ -2,7 +2,7 @@ import { useEffect, useState, useRef } from "react";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
 import './CSS/Algorithm.css'
-import bgImage from "./../assets/home_background.jpg";
+import Algo_Summary from "./Algo_Summary";
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
@@ -25,6 +25,7 @@ const Algorithm = () => {
 
   const [liveData, setLiveData] = useState([]);
   const [timer, setTimer] = useState(0);
+  const [showSummary, setShowSummary] = useState(false);
   let gnatt_ind = useRef(0);
 
   useEffect(() => {
@@ -36,8 +37,8 @@ const Algorithm = () => {
         setGanttChart(data.gantt_chart);
         setStats(data.process_stats);
         setAverages(data.averages);
-        setEndTime(data.averages.end_time + 1);
-      } catch (error) { setError("Error fetching scheduling data"); console.log(error);}
+        setEndTime(data.averages.end_time);
+      } catch (error) { setError("Error fetching scheduling data"); console.error(error);}
       finally { setLoading(false); }
     } fetchData();
   }, []);
@@ -49,37 +50,49 @@ const Algorithm = () => {
   }, [processes, gantt_chart, endTime]);
 
   useEffect(() => {
-    if (timer >= endTime) return;
-    const intervalId = setInterval(() => { setTimer(prev => prev + 1); }, 1000);
+    const intervalId = setInterval(() => {
+      setTimer(prev => {
+        if (prev >= endTime) { clearInterval(intervalId); return prev;}
+        return prev + 0.25;
+      });}, 250);
     return () => clearInterval(intervalId);
-  }, [timer, endTime]);
+  }, [endTime]);
 
   useEffect(() => {
-    if (!gantt_chart || gantt_chart.length === 0) return;
-    if (!liveData || liveData.length === 0) return;
-    if (gnatt_ind > gantt_chart.length - 1) return;
+    if (!gantt_chart?.length || !liveData?.length) { setTimer(0); return; }
+    if (gnatt_ind.current > gantt_chart.length - 1) return;
     const current = gantt_chart[gnatt_ind.current];
     if (!current) return;
-    let process_id = parseInt(current.process.replace("P", ""), 10) - 1;
-    liveData[process_id].remaining_burst -= 1;
-    if (liveData[process_id].remaining_burst == 0) 
-      liveData[process_id].completed = true;
-    for (const value of liveData){
-      if (!value.completed && value.process_name !== current.process) value.waiting_time += 1;
-    } if (timer == current.end) { gnatt_ind.current += 1; }
+    const process_id = parseInt(current.process.replace("P", ""), 10) - 1;
+    setLiveData(prev => prev.map((p, idx) => {
+      if (idx === process_id) {
+        const remaining = p.remaining_burst - 0.25;
+        return { ...p, remaining_burst: remaining, completed: remaining <= 0 };
+      } else if (!p.completed && p.process_name !== current.process) {
+        return { ...p, waiting_time: p.waiting_time + 0.25 };
+      } return p;
+    }));
+    if (Math.abs(timer - current.end) < 1e-6) { gnatt_ind.current += 1; }
   }, [timer, gantt_chart]);
 
   if (loading) return ( <>
     <div className="toast-overlay" />
     <div className="toast-message processing">Loading the Data...</div>
-  </> ); if (errori) return (<>
+  </> ); 
+  
+  if (errori) return (<>
     <div className="toast-overlay" onClick={() => setError(null)} />
     <div className="toast-message error" onClick={() => setError(null)}>{errori}</div>
   </> );
 
   return (
-    <div className="cpu-scheduler" style={{ backgroundImage: `url(${bgImage})` }}>
+    <div className="cpu-scheduler" style={{ background: 'linear-gradient(135deg, #ACCDC6, #D2DDD5)', height: "auto" }}>
       <h1>{formData.algorithm} Scheduling</h1> <h2>Simulation</h2>
+      <div style={{display: "flex", alignItems: "center", gap: "50px", margin: "0", padding: "0"}}>
+        <div className="timer-display">Time: {parseInt(timer)}/{endTime}</div>
+        {timer >= endTime && (
+          <button className="view-summary-button" onClick={() => setShowSummary(!showSummary)} > {showSummary ? "Hide Summary" : "View Summary Report"} </button>)} 
+      </div>
       <table className="livePreview">
         <thead>
           <tr>
@@ -96,12 +109,12 @@ const Algorithm = () => {
               <td>{p.priority ?? "-"}</td>
               <td>{p.process_name ?? `P${index + 1}`}</td>
               <td><div className="statusbar"><div id={p.process_name} className="progress" style={{ width: `${((p.burstTime - p.remaining_burst) / p.burstTime) * 100}%`, }} /></div> </td>
-              <td>{p.remaining_burst}</td>
-              <td>{p.waiting_time}</td>
+              <td>{parseInt(p.remaining_burst)}</td>
+              <td>{parseInt(p.waiting_time)}</td>
             </tr>
           ))}
         </tbody>
-      </table>
+      </table>{showSummary && timer >= endTime && (<Algo_Summary {...{ gantt_chart, processStats, endTime, averages }} />)}
     </div>
   );
 };

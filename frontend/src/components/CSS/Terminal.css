@@ -1,0 +1,50 @@
+.terminal {
+  height: 90%;
+  width: 50%;
+  margin: 20px 50px 20px 20px;
+  padding: 20px 20px;
+  background-color: black;
+  border-radius: 20px;
+  border: 5px solid rgb(62, 60, 60);
+  color: white;
+  font-family: "Cascadia Code", monospace;
+  font-size: 13px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #555 #222;
+} .terminal::-webkit-scrollbar {
+  width: 8px;
+} .terminal::-webkit-scrollbar-track {
+  background: #222;
+  border-radius: 10px;
+}.terminal::-webkit-scrollbar-thumb {
+  background: #555;
+  border-radius: 10px;
+} .terminal::-webkit-scrollbar-thumb:hover {
+  background: #888;
+}
+
+.terminal pre, .terminalLink {
+  font-family: "Cascadia Code", monospace;
+  font-size: 13px;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  color: white;
+  text-decoration: none;
+}
+
+.terminalLink:hover{
+  text-decoration: underline;
+}
+
+.terminal input, .terminal span{
+  background-color: black;
+  font-family: "Cascadia Code", monospace;
+  font-size: 13px;
+  width: 100%; 
+  border: none;
+  width: calc(100% - 40px); 
+  outline: none;
+  color: white;
+}

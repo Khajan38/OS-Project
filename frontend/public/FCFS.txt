@@ -1,0 +1,10 @@
+First Come, First Serve (FCFS) is one of the simplest types of CPU scheduling algorithms. It is exactly what it sounds like: processes are attended to in the order in which they arrive in the ready queue, much like customers lining up at a grocery store.
+
+FCFS Scheduling is a non-preemptive algorithm, meaning once a process starts running, it cannot be stopped until it voluntarily relinquishes the CPU, typically when it terminates or performs I/O. This method schedules processes in the order they arrive, without considering priority or other factors.
+
+How Does FCFS Work? The mechanics of FCFS are straightforward:
+
+1. Arrival: Processes enter the system and are placed in a queue in the order they arrive.
+2. Execution: The CPU takes the first process from the front of the queue, executes it until it is complete, and then removes it from the queue.
+3. Repeat: The CPU takes the next process in the queue and repeats the execution process.
+This continues until there are no more processes left in the queue.

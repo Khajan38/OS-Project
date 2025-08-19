@@ -2,24 +2,21 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import bgImage from "./../assets/home_background.jpg";
+import Terminal from "./Terminal"
 import "./CSS/CPUScheduler.css";
-import { useRef } from "react";
 
 const CPUScheduler = () => {
   const [formData, setFormData] = useState({algorithm: "", source: "processes1.csv", noOfProcesses: 0});
   const navigate = useNavigate();
-  const inputRef = useRef(null);
   const [files, setFiles] = useState([]);
   const [showModal, setShowModal] = useState(false);
-  const default_text = `Windows PowerShell
-Copyright (C) Microsoft Corporation. All rights reserved.
 
-Install the latest PowerShell for new features and improvements!`;
   useEffect(() => {
     formData.source = 'processes1.csv';
     formData.algorithm = '';
     formData.noOfProcesses = 0;
   }, []);
+
   const handleChange = (e) => {setFormData({ ...formData, [e.target.name]: e.target.value });};
   const fileModal = async () => {
     try {
@@ -29,12 +26,13 @@ Install the latest PowerShell for new features and improvements!`;
       setShowModal(true);
     } catch (err) { console.error(err); }
   };
-  const focusInput = () => { inputRef.current?.focus(); };
+
   const runCPUScheduler = (e) => {
     e.preventDefault();
     const params = new URLSearchParams(formData).toString();
     navigate(`/os/cpu_scheduler/Algorithm?${params}`);
   }; 
+
   return (
     <div className="cpu-scheduler"  style={{ backgroundImage: `url(${bgImage})` }} >
       <h1>CPU Scheduling</h1> <h2>Simulation</h2>
@@ -70,11 +68,7 @@ Install the latest PowerShell for new features and improvements!`;
           </div>
           <button className='btn' type="submit" disabled={formData.algorithm=='' || formData.source=='' || formData.noOfProcesses <= 0 || formData.noOfProcesses > 10 } >Choose</button>
         </form>
-        <div className="terminal" onClick={focusInput}>
-          <pre>{default_text} <a className="terminalLink" href='https://aka.ms/PSWindows' target="_blank">https://aka.ms/PSWindows</a> </pre> <br />
-          <span>PS &gt; </span>
-          <input ref={inputRef} type="text" />
-        </div>
+        <Terminal formData={formData} />
       </div>
     </div>
   );
